@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def f(x):
+    return x**3 - 3*x**2 + 1
+
+def df(x):
+    return 3*x**2 - 6*x
+
+def newton_raphson(f, df, x0, tolerance=1e-5, max_iterations=1000):
+    iterations = 0
+    while True:
+        iterations += 1
+        dx = f(x0)/df(x0)
+        x1 = x0 - dx
+        if abs(dx) < tolerance or iterations > max_iterations:
+            break
+        x0 = x1
+    return x0, iterations
+
+x0 = 1.5
+root, iterations = newton_raphson(f, df, x0)
+print(f"Корень: {root}")
+print(f"Количество итераций: {iterations}")
+
+# График функции и путь Ньютона
+x = np.linspace(-1, 2, 1000)
+y = f(x)
+plt.plot(x, y)
+plt.plot([-1, root], [0, 0], '--', color='red')
+plt.plot(x0, f(x0), 'o', color='blue')
+plt.plot(np.array([-1, x0, root]), np.zeros(3), '--', color='blue')
+plt.show()
